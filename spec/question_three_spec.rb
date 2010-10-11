@@ -11,15 +11,21 @@ describe "DynamicWheel" do
   end
 end
 
-describe "Mark III machine" do
+describe "Mark IV machine" do
   it "should not change a single character string as the third wheel defaults to zero" do
     Minisculus::QuestionThree::MarkIV(0, 0, %w{a b c d e}).decrypt("c").should == "c"
     Minisculus::QuestionThree::MarkIV(1, 0, %w{a b c d e}).decrypt("c").should == "d"
     Minisculus::QuestionThree::MarkIV(1, 1, %w{a b c d e}).decrypt("c").should == "b"
+    Minisculus::QuestionThree::MarkIV(1, 2, %w{a b c d e}).decrypt("b").should == "d"
   end
   
-  it "should change the second character of a string based on the tranposed first string" do
-    Minisculus::QuestionThree::MarkIV(0, 0, %w{a b c d e}).decrypt("cc").should == "cb"
-    Minisculus::QuestionThree::MarkIV(2, 0, %w{a b c d e}).decrypt("cc").should == "ec"
+  it "should change the second character of a string based on the position of the first char" do
+    Minisculus::QuestionThree::MarkIV(0, 0, %w{a b c d e}).decrypt("bc").should == "be"
+    Minisculus::QuestionThree::MarkIV(1, 2, %w{a b c d e}).decrypt("bc").should == "db"
+  end
+  
+  it "should change the third character of a string based on the position of the second char" do
+    Minisculus::QuestionThree::MarkIV(0, 0, %w{a b c d e}).decrypt("bca").should == "bee"
+    Minisculus::QuestionThree::MarkIV(1, 2, %w{a b c d e}).decrypt("bcd").should == "dbe"
   end
 end

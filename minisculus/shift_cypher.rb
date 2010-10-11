@@ -13,9 +13,9 @@ module Minisculus
     
     private
     
-    def transpose(char)
-      @wheels.inject(char) { |char, wheel| wheel.transpose(char, @character_set) }.tap do |char|
-        @previous_character_index = @character_set.index(char)
+    def transpose(character)
+      @wheels.inject(character) { |char, wheel| wheel.transpose(char, @character_set) }.tap do
+        @previous_character_index = @character_set.index(character)
       end
     end
     
