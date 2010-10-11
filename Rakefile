@@ -29,5 +29,9 @@ namespace :quiz do
     task :two do
       answer_question("2077f244def8a70e5ea758bd8352fcd8") { Minisculus::QuestionTwo.answer! }
     end
+    
+    task :three do
+      answer_question("36d80eb0c50b49a509b49f2424e8c805") { Minisculus::QuestionThree.answer! }
+    end
   end
 end
