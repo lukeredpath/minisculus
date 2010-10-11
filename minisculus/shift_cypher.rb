@@ -7,8 +7,12 @@ module Minisculus
       @wheels.each { |wheel| wheel.cypher = self }
     end
     
-    def decrypt(string)
+    def encrypt(string)
       string.each_char.map { |char| transpose(char) }.join
+    end
+    
+    def decrypt(encrypted_string)
+      
     end
     
     private

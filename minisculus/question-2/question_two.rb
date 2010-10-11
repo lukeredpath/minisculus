@@ -3,7 +3,7 @@ require 'shift_cypher'
 module Minisculus
   module QuestionTwo
     def self.answer!
-      MarkII(9, 3).decrypt('The Desert Fox will move 30 tanks to Calais at dawn')
+      MarkII(9, 3).encrypt('The Desert Fox will move 30 tanks to Calais at dawn')
     end
     
     def self.MarkII(wheel_one, wheel_two, character_set = DEFAULT_CHARSET)
