@@ -1,4 +1,4 @@
-require 'question-1/question_one'
+require 'shift_cypher'
 
 module Minisculus
   module QuestionTwo
@@ -6,15 +6,9 @@ module Minisculus
       MarkII.new(9, 3).decrypt('The Desert Fox will move 30 tanks to Calais at dawn')
     end
     
-    class MarkII < QuestionOne::MarkI
+    class MarkII < ShiftCypher
       def initialize(first_key, second_key, character_set = default_character_set)
-        super(first_key, character_set)
-        @second_key = second_key
-      end
-      
-      def transpose(char)
-        index = @character_set.index(super(char)) - (2 * @second_key)
-        @character_set[index]
+        super([Wheel.new(first_key), Wheel.new(second_key*2, true)], character_set)
       end
     end
   end
