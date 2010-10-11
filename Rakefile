@@ -33,5 +33,9 @@ namespace :quiz do
     task :three do
       answer_question("36d80eb0c50b49a509b49f2424e8c805") { Minisculus::QuestionThree.answer! }
     end
+    
+    task :four do
+      answer_question("4baecf8ca3f98dc13eeecbac263cd3ed") { Minisculus::QuestionFour.answer! }
+    end
   end
 end
