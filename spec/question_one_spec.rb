@@ -18,4 +18,17 @@ describe "Mark I machine" do # basic ceasar/shift cypher
     Minisculus::QuestionOne::MarkI.new(1, %w{a b c}).decrypt("bc").should == "ca"
   end
   
+  context "with default character set and a key of 5" do
+    before do
+      @machine = Minisculus::QuestionOne::MarkI.new(5)
+    end
+    
+    it "should decrypt 'a' as 'f'" do
+      @machine.decrypt('a').should == 'f'
+    end
+    
+    it "should decrypt 'c' as 'h'" do
+      @machine.decrypt('c').should == 'h'
+    end
+  end
 end
