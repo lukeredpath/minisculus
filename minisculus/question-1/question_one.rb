@@ -3,13 +3,13 @@ require 'shift_cypher'
 module Minisculus
   module QuestionOne
     def self.answer!
-      MarkI.new(6).decrypt('Strong NE Winds!')
+      MarkI(6).decrypt('Strong NE Winds!')
     end
     
-    class MarkI < ShiftCypher
-      def initialize(key, character_set = default_character_set)
-        super([Wheel.new(key)], character_set)
-      end
+    def self.MarkI(wheel_one, character_set = DEFAULT_CHARSET)
+      ShiftCypher.new([
+        ShiftCypher::Wheel.new(wheel_one), 
+      ], character_set)
     end
   end
 end

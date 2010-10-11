@@ -3,13 +3,14 @@ require 'shift_cypher'
 module Minisculus
   module QuestionTwo
     def self.answer!
-      MarkII.new(9, 3).decrypt('The Desert Fox will move 30 tanks to Calais at dawn')
+      MarkII(9, 3).decrypt('The Desert Fox will move 30 tanks to Calais at dawn')
     end
     
-    class MarkII < ShiftCypher
-      def initialize(first_key, second_key, character_set = default_character_set)
-        super([Wheel.new(first_key), Wheel.new(second_key*2, true)], character_set)
-      end
+    def self.MarkII(wheel_one, wheel_two, character_set = DEFAULT_CHARSET)
+      ShiftCypher.new([
+        ShiftCypher::Wheel.new(wheel_one), 
+        ShiftCypher::Wheel.new(wheel_two * 2, true)
+      ], character_set)
     end
   end
 end
