@@ -1,5 +1,6 @@
 require 'restclient'
 require 'json'
+require 'uri'
 
 module Minisculus
   class QuizMaster < RestClient::Resource
@@ -67,6 +68,10 @@ module Minisculus
     
     def reference_url
       @resource.url
+    end
+    
+    def reference
+      File.basename(URI.parse(reference_url).path, '.html')
     end
     
     def to_s
