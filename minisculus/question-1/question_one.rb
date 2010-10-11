@@ -1,5 +1,9 @@
 module Minisculus
   module QuestionOne
+    def self.answer!
+      MarkI.new(6).decrypt('Strong NE Winds!')
+    end
+    
     class MarkI
       def initialize(key, character_set = default_character_set)
         @key, @character_set = key, character_set
@@ -28,7 +32,4 @@ module Minisculus
       end
     end
   end
-end
-
-if __FILE__ == $0
 end

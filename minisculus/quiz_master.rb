@@ -11,7 +11,20 @@ module Minisculus
       self['start'].get(headers) do |response, request, result|
         case response.code
         when 303
-          return Question.from_response(self, self[response.headers[:location]].get)
+          get_next_question_from_response(response)
+        else
+          raise UnexpectedResponse.new(response)
+        end
+      end
+    end
+    
+    def answer(question_reference, answer)
+      self[question_reference].put({:answer => answer}.to_json, headers) do |response, request, result|
+        case response.code
+        when 406
+          false
+        when 303
+          get_next_question_from_response(response)
         else
           raise UnexpectedResponse.new(response)
         end
@@ -32,8 +45,12 @@ module Minisculus
     
     private
     
+    def get_next_question_from_response(response)
+      Question.from_response(self, self[response.headers[:location]].get)
+    end
+    
     def headers(other_headers = {})
-      other_headers.merge("Accept" => "application/json")
+      other_headers.merge(:accept => :json, :content_type => :json)
     end
   end
   
