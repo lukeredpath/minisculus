@@ -1,6 +1,6 @@
 module Minisculus
   class ShiftCypher
-    attr_reader :previous_character_index
+    attr_reader :last_character
     
     def initialize(wheels, character_set)
       @wheels, @character_set = wheels, character_set
@@ -8,18 +8,20 @@ module Minisculus
     end
     
     def encrypt(string)
-      string.each_char.map { |char| transpose(char) }.join
+      string.each_char.map { |char| transpose(char, :encrypt) }.join
     end
     
     def decrypt(encrypted_string)
-      
+      encrypted_string.each_char.map { |char| transpose(char, :decrypt) }.join
     end
     
     private
     
-    def transpose(character)
-      @wheels.inject(character) { |char, wheel| wheel.transpose(char, @character_set) }.tap do
-        @previous_character_index = @character_set.index(character)
+    def transpose(character, method)
+      @last_character = character
+      
+      @wheels.inject(character) do |char, wheel|
+        wheel.send(method, char, @character_set)
       end
     end
     
@@ -30,9 +32,15 @@ module Minisculus
         @key, @reverse = key, reverse
       end
       
-      def transpose(char, character_set)
+      def encrypt(char, character_set)
         index = character_set.index(char) + adjusted_key
         index = (index % character_set.length) unless @reverse
+        character_set[index]
+      end
+      
+      def decrypt(char, character_set)
+        index = character_set.index(char) - adjusted_key
+        index = (index % character_set.length) if @reverse
         character_set[index]
       end
       
@@ -43,17 +51,31 @@ module Minisculus
       end
     end
     
-    class DynamicWheel < Wheel
+    class LastPositionWheel < Wheel
       DEFAULT_INDEX = 0
       
+      attr_accessor :previous_character_index
+      
       def initialize(&modifier)
-        @modifier = modifier
+        @modifier = modifier || proc{ |key| key }
+      end
+      
+      def encrypt(char, character_set)
+        super.tap do |encrypted|
+          self.previous_character_index = character_set.index(cypher.last_character)
+        end
+      end
+      
+      def decrypt(char, character_set)
+        super.tap do |decrypted|
+          self.previous_character_index = character_set.index(decrypted)
+        end
       end
       
       protected
       
       def adjusted_key
-        @modifier.call(cypher.previous_character_index || DEFAULT_INDEX)
+        @modifier.call(self.previous_character_index || DEFAULT_INDEX)
       end
     end
   end
