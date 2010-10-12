@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'shift_cypher'
+require 'machines'
 
 describe "ShiftCypher" do
   context "with no wheels" do
@@ -53,11 +54,11 @@ describe "ShiftCypher" do
       @cypher.encrypt("a").should == "a"
     end
     
-    it "should shift every character to the right by the index of the previously indexed character" do
+    it "should shift every character to the right by the index of the previously indexed character when encrypting" do
       @cypher.encrypt("bcd").should == "bdf"
     end
     
-    it "should shift every character to the left by the index of the previously indexed decrypted character" do
+    it "should shift every character to the left by the index of the previously indexed decrypted characte when decryptingr" do
       @cypher.decrypt("bdf").should == "bcd"
     end
   end
@@ -71,11 +72,11 @@ describe "ShiftCypher" do
       @cypher.encrypt("a").should == "a"
     end
     
-    it "should shift every character to the right by the index of the previously indexed character adjusted by the modifier" do
+    it "should shift every character to the right by the index of the previously indexed character adjusted by the modifier when encrypting" do
       @cypher.encrypt("bcd").should == "bea"
     end
     
-    it "should shift every character to the left by the index of the previously indexed decrypted character adjusted by the modifier" do
+    it "should shift every character to the left by the index of the previously indexed decrypted character adjusted by the modifier when decrypting" do
       @cypher.decrypt("bea").should == "bcd"
     end
   end

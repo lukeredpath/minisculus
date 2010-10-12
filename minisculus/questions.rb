@@ -40,6 +40,7 @@ module Minisculus
       end
       
       def self.answer
+        puts "Decrypted: #{Minisculus::Machines.MarkIV(7, 2).decrypt(%q{WZyDsL3u'0TfxP06RtSSF 'DbzhdyFIAu2 zF f5KE"SOQTNA8A"NCKPOKG5D9GSQE'M86IGFMKE6'K4pEVPK!bv83I})}"
         Minisculus::Machines.MarkIV(7, 2).decrypt(%q{WZyDsL3u'0TfxP06RtSSF 'DbzhdyFIAu2 zF f5KE"SOQTNA8A"NCKPOKG5D9GSQE'M86IGFMKE6'K4pEVPK!bv83I})
       end
     end
