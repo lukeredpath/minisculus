@@ -15,41 +15,41 @@ describe "Mark IV machine" do
 
     it "should change the third character of a string based on the position of the second char" do
       Minisculus::Machines.MarkIV(0, 0, %w{a b c d e}).encrypt("bca").should == "bee"
-      Minisculus::Machines.MarkIV(0, 0, %w{a b c d e}).encrypt("bee").should == "bca"
+      Minisculus::Machines.MarkIV(0, 0, %w{a b c d e}).decrypt("bee").should == "bca"
     end
   end
   
   context "with a non-zero value for the first wheel" do
     it "should just shift a single character to the right" do
       Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).encrypt("c").should == "d"
-      Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).encrypt("d").should == "c"
+      Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).decrypt("d").should == "c"
     end
     
     it "should change the second character of a string based on the position of the first char * 2" do
       Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).encrypt("bc").should == "ca"
-      Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).encrypt("ca").should == "bc"
+      Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).decrypt("ca").should == "bc"
     end
-
+  
     it "should change the third character of a string based on the position of the second char * 2" do
       Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).encrypt("bca").should == "caa"
-      Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).encrypt("caa").should == "bca"
+      Minisculus::Machines.MarkIV(1, 0, %w{a b c d e}).decrypt("caa").should == "bca"
     end
   end
   
   context "with a non-zero value for the second wheel" do
     it "should just shift a single character to the left * 2" do
       Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).encrypt("c").should == "a"
-      Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).encrypt("a").should == "c"
+      Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).decrypt("a").should == "c"
     end
     
     it "should change the second character of a string based on the position of the first char * 2" do
       Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).encrypt("bc").should == "ec"
-      Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).encrypt("ec").should == "bc"
+      Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).decrypt("ec").should == "bc"
     end
-
+  
     it "should change the third character of a string based on the position of the second char * 2" do
       Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).encrypt("bca").should == "ecc"
-      Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).encrypt("ecc").should == "bca"
+      Minisculus::Machines.MarkIV(0, 1, %w{a b c d e}).decrypt("ecc").should == "bca"
     end
   end
 end

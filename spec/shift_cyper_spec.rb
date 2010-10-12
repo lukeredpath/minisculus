@@ -47,37 +47,65 @@ describe "ShiftCypher" do
   
   context "with a last position > wheel" do
     before do
-      @cypher = Minisculus::ShiftCypher.new([Minisculus::ShiftCypher::LastPositionWheel.new], %w{a b c d e f g})
+      @cypher = Minisculus::ShiftCypher.new([last_position_wheel], %w{a b c d e f g})
     end
     
     it "should return the input string if it is only one character long" do
       @cypher.encrypt("a").should == "a"
     end
     
-    it "should shift every character to the right by the index of the previously indexed character when encrypting" do
+    it "should shift every character to the right by the index of the previous character when encrypting" do
       @cypher.encrypt("bcd").should == "bdf"
     end
     
-    it "should shift every character to the left by the index of the previously indexed decrypted characte when decryptingr" do
+    it "should shift every character to the left by the index of the previous character when decrypting" do
       @cypher.decrypt("bdf").should == "bcd"
     end
   end
   
   context "with a last position > and modifier wheel" do
     before do
-      @cypher = Minisculus::ShiftCypher.new([Minisculus::ShiftCypher::LastPositionWheel.new { |x| x * 2 }], %w{a b c d e f g})
+      @cypher = Minisculus::ShiftCypher.new([last_position_wheel { |x| x * 2 }], %w{a b c d e f g})
     end
     
     it "should return the input string if it is only one character long" do
       @cypher.encrypt("a").should == "a"
     end
     
-    it "should shift every character to the right by the index of the previously indexed character adjusted by the modifier when encrypting" do
+    it "should shift every character to the right by the index of the previous character adjusted by the modifier when encrypting" do
       @cypher.encrypt("bcd").should == "bea"
     end
     
-    it "should shift every character to the left by the index of the previously indexed decrypted character adjusted by the modifier when decrypting" do
+    it "should shift every character to the left by the index of the previous character adjusted by the modifier when decrypting" do
       @cypher.decrypt("bea").should == "bcd"
+    end
+  end
+  
+  context "with >1 wheel and a < 3 wheel" do
+    before do
+      @cyper = Minisculus::ShiftCypher.new([wheel(1, false), wheel(3, true)], Minisculus::DEFAULT_CHARSET)
+    end
+    
+    it "should shift every char 1 to the right and 3 to the left when encrypting" do
+      @cyper.encrypt("efg").should == "cde"
+    end
+    
+    it "should shift every char 3 to the right and 1 to the left when decrypting" do
+      @cyper.decrypt("cde").should == "efg"
+    end
+  end
+  
+  context "with >1 wheel and a last position wheel" do
+    before do
+      @cyper = Minisculus::ShiftCypher.new([wheel(1, false), last_position_wheel], %w{a b c d e f g h})
+    end
+    
+    it "should shift every char 1 to the right and then to the right by the index of the previous character" do
+      @cyper.encrypt("bcd").should == "ceg"
+    end
+    
+    it "should shift every char to the left by the index of the previous character and 1 to the left when decrypting" do
+      @cyper.decrypt("ceg").should == "bcd"
     end
   end
   
@@ -85,5 +113,9 @@ describe "ShiftCypher" do
   
   def wheel(key, reverse)
     Minisculus::ShiftCypher::Wheel.new(key, reverse)
+  end
+  
+  def last_position_wheel(&block)
+    Minisculus::ShiftCypher::LastPositionWheel.new(&block)
   end
 end

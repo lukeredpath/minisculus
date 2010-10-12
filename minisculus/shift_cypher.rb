@@ -3,7 +3,7 @@ module Minisculus
     attr_reader :last_character
     
     def initialize(wheels, character_set)
-      @wheels, @character_set = wheels, character_set
+      @wheels, @character_set = wheels, character_set.to_character_set
       @wheels.each { |wheel| wheel.cypher = self }
     end
     
@@ -27,27 +27,20 @@ module Minisculus
     
     class Wheel
       attr_accessor :cypher
+      attr_reader :key
       
       def initialize(key, reverse = false)
-        @key, @reverse = key, reverse
+        @key = reverse ? -key : key
       end
       
       def encrypt(char, character_set)
-        index = character_set.index(char) + adjusted_key
-        index = (index % character_set.length) unless @reverse
+        index = character_set.index(char) + key
         character_set[index]
       end
       
       def decrypt(char, character_set)
-        index = character_set.index(char) - adjusted_key
-        index = (index % character_set.length) if @reverse
+        index = character_set.index(char) - key
         character_set[index]
-      end
-      
-      protected
-      
-      def adjusted_key
-        @reverse ? -@key : @key
       end
     end
     
@@ -71,10 +64,8 @@ module Minisculus
           self.previous_character_index = character_set.index(decrypted)
         end
       end
-      
-      protected
-      
-      def adjusted_key
+
+      def key
         @modifier.call(self.previous_character_index || DEFAULT_INDEX)
       end
     end

@@ -5,14 +5,14 @@ module Minisculus
     def self.MarkI(wheel_one, character_set = Minisculus::DEFAULT_CHARSET)
       ShiftCypher.new([
         ShiftCypher::Wheel.new(wheel_one), 
-      ], character_set)
+      ], character_set.to_character_set)
     end
     
     def self.MarkII(wheel_one, wheel_two, character_set = Minisculus::DEFAULT_CHARSET)
       ShiftCypher.new([
         ShiftCypher::Wheel.new(wheel_one), 
         ShiftCypher::Wheel.new(wheel_two * 2, true)
-      ], character_set)
+      ], character_set.to_character_set)
     end
     
     def self.MarkIII
@@ -24,7 +24,29 @@ module Minisculus
         ShiftCypher::Wheel.new(wheel_one), 
         ShiftCypher::Wheel.new(wheel_two * 2, true),
         ShiftCypher::LastPositionWheel.new { |idx| idx * 2 }
-      ], character_set)
+      ], character_set.to_character_set)
+    end
+  end
+  
+  class Charset
+    def initialize(char_array)
+      @array = char_array
+    end
+    
+    def [](index)
+      if index >= @array.length || index < -@array.length
+        @array[index % @array.length]
+      else
+        @array[index]
+      end
+    end
+    
+    def to_character_set
+      self
+    end
+    
+    def method_missing(*args)
+      @array.send(*args)
     end
   end
   
@@ -36,4 +58,10 @@ module Minisculus
     "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
     ".", ",", "?", "!", "'", "\"", " "
   ]
+end
+
+class Array
+  def to_character_set
+    Minisculus::Charset.new(self)
+  end
 end
