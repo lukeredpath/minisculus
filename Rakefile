@@ -46,12 +46,17 @@ namespace :quiz do
       answer_question(Minisculus::Questions::Four)
     end
     
+    task :five do
+      answer_question(Minisculus::Questions::Five)
+    end
+    
     task :all do
       ENV['QUIET'] = 'true'
       Rake::Task['quiz:answer:one'].execute
       Rake::Task['quiz:answer:two'].execute
       Rake::Task['quiz:answer:three'].execute
       Rake::Task['quiz:answer:four'].execute
+      Rake::Task['quiz:answer:five'].execute
       puts "\nFinished."
     end
   end
