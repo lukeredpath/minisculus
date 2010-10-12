@@ -47,7 +47,7 @@ namespace :quiz do
     end
     
     task :five do
-      answer_question(Minisculus::Questions::Five)
+      Minisculus::Questions::Five.answer
     end
     
     task :all do

@@ -50,7 +50,27 @@ module Minisculus
       end
       
       def self.answer
-        
+        code = "QT4e8MJYVhkls.27BL9,.MSqYSi'IUpAJKWg9Ul9p4o8oUoGy'ITd4d0AJVsLQp4kKJB2rz4dxfahwUa\"Wa.MS!k4hs2yY3k8ymnla.MOTxJ6wBM7sC0srXmyAAMl9t\"Wk4hs2yYTtH0vwUZp4a\"WhB2u,o6.!8Zt\"Wf,,eh5tk8WXv9UoM99w2Vr4!.xqA,5MSpWl9p4kJ2oUg'6evkEiQhC'd5d4k0qA'24nEqhtAQmy37il9p4o8vdoVr!xWSkEDn?,iZpw24kF\"fhGJZMI8nkI"
+        keywords = %w{FURLIN BUNKER}
+        wheel_range = (0..9)
+        acceptable_wheel_positions = []
+        message = nil
+        wheel_range.each do |wheel_one|
+          wheel_range.each do |wheel_two|
+            result = Minisculus::Machines.MarkIV(wheel_one, wheel_two).decrypt(code)
+            if keywords.all? { |keyword| result =~ /#{keyword}/ }
+              puts "Found result for wheel positions {#{wheel_one}, #{wheel_two}}."
+              acceptable_wheel_positions << [wheel_one, wheel_two]
+              message = result
+            end
+          end
+        end
+        if message
+          puts "Message: #{message}"
+          puts "Wheel Positions: #{acceptable_wheel_positions.inspect}"
+        else
+          puts "Could not find the result! :("
+        end
       end
     end
   end
