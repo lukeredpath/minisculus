@@ -1,0 +1,9 @@
+To run all specs:
+
+    rake spec
+    
+To run and submit answers to questions (question five is just put to STDOUT):
+
+    rake quiz:answer:all
+    
+Gem dependencies: rspec, restclient
